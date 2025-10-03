@@ -48,10 +48,10 @@ class HomePage extends StatelessWidget {
         title: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Olá, $alunoNome", style: const TextStyle(fontSize: 18)),
+            Text("Olá, $alunoNome", style: const TextStyle(fontSize: 18, color: Colors.white)),
             const Text(
               "Sua jornada começa com atitude",
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Colors.white),
             ),
           ],
         ),

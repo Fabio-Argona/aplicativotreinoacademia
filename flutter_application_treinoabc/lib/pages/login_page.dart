@@ -17,19 +17,36 @@ class _LoginPageState extends State<LoginPage> {
   bool _loading = false;
   String? _error;
 
-  final Color primaryColor = const Color(0xFFFF6F00); // Laranja forte
-  final Color accentColor = const Color(0xFFD84315); // Vermelho queimado
+  final Color primaryColor = const Color(0xFFFF6F00);
+  final Color accentColor = const Color(0xFFD84315);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF3E0), // Fundo suave
+      backgroundColor: const Color(0xFFFFF3E0),
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title: const Text("Treino Full Performance • Acesse sua jornada"),
         centerTitle: true,
         elevation: 2,
+        title: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Text(
+              "Treino Full Performance",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              "Sua jornada começa aqui",
+              style: TextStyle(fontSize: 14, color: Colors.white70),
+            ),
+          ],
+        ),
       ),
+
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
@@ -66,14 +83,27 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _loginController,
                     decoration: InputDecoration(
                       labelText: "Login",
+                      labelStyle: TextStyle(color: primaryColor),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12.0,
                           vertical: 12.0,
-                        ), // Ajusta verticalmente
-                        child: FaIcon(FontAwesomeIcons.userAstronaut),
+                        ),
+                        child: FaIcon(
+                          FontAwesomeIcons.userAstronaut,
+                          color: primaryColor,
+                        ),
                       ),
-                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: primaryColor, width: 1.5),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: primaryColor, width: 2),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -82,16 +112,32 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: "Senha",
+                      labelStyle: TextStyle(color: primaryColor),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.symmetric(
-                          vertical: 12.0,
                           horizontal: 12.0,
+                          vertical: 12.0,
                         ),
-                        child: FaIcon(FontAwesomeIcons.lock),
+                        child: FaIcon(
+                          FontAwesomeIcons.lock,
+                          color: primaryColor,
+                        ),
                       ),
-                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: primaryColor, width: 1.5),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: primaryColor, width: 2),
+                      ),
                     ),
                   ),
+
+                  const SizedBox(height: 16),
+                  
                   const SizedBox(height: 24),
                   if (_loading) const CircularProgressIndicator(),
                   if (_error != null)
@@ -118,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text(
                         "Entrar",
                         style: TextStyle(
-                          color: primaryColor, // Texto laranja
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),

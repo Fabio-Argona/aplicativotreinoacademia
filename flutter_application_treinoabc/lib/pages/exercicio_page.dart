@@ -16,8 +16,8 @@ class _ExerciciosPageState extends State<ExerciciosPage> {
   List<Exercicio> exercicios = [];
   bool _loading = true;
 
-  final Color primaryColor = const Color(0xFFFF6F00); // Laranja forte
-  final Color accentColor = const Color(0xFFD84315); // Vermelho queimado
+  final Color primaryColor = const Color(0xFFFF6F00);
+  final Color accentColor = const Color(0xFFD84315);
 
   @override
   void initState() {
@@ -57,6 +57,8 @@ class _ExerciciosPageState extends State<ExerciciosPage> {
       text: exercicio.observacao ?? '',
     );
 
+    final Color primaryColor = const Color(0xFFFF6F00);
+
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -66,39 +68,132 @@ class _ExerciciosPageState extends State<ExerciciosPage> {
             children: [
               TextField(
                 controller: nomeController,
-                decoration: const InputDecoration(labelText: 'Nome'),
+                decoration: InputDecoration(
+                  labelText: 'Nome',
+                  labelStyle: TextStyle(color: primaryColor),
+                  filled: true,
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 1.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 2),
+                  ),
+                ),
               ),
+              const SizedBox(height: 12),
               TextField(
                 controller: grupoController,
-                decoration: const InputDecoration(labelText: 'Grupo Muscular'),
+                decoration: InputDecoration(
+                  labelText: 'Grupo Muscular',
+                  labelStyle: TextStyle(color: primaryColor),
+                  filled: true,
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 1.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 2),
+                  ),
+                ),
               ),
+              const SizedBox(height: 12),
               TextField(
                 controller: seriesController,
-                decoration: const InputDecoration(labelText: 'Séries'),
                 keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Séries',
+                  labelStyle: TextStyle(color: primaryColor),
+                  filled: true,
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 1.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 2),
+                  ),
+                ),
               ),
+              const SizedBox(height: 12),
               TextField(
                 controller: repMinController,
-                decoration: const InputDecoration(
-                  labelText: 'Repetições Mínimas',
-                ),
                 keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Repetições Mínimas',
+                  labelStyle: TextStyle(color: primaryColor),
+                  filled: true,
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 1.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 2),
+                  ),
+                ),
               ),
+              const SizedBox(height: 12),
               TextField(
                 controller: repMaxController,
-                decoration: const InputDecoration(
-                  labelText: 'Repetições Máximas',
-                ),
                 keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Repetições Máximas',
+                  labelStyle: TextStyle(color: primaryColor),
+                  filled: true,
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 1.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 2),
+                  ),
+                ),
               ),
+              const SizedBox(height: 12),
               TextField(
                 controller: pesoController,
-                decoration: const InputDecoration(labelText: 'Peso Inicial'),
                 keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Peso Inicial',
+                  labelStyle: TextStyle(color: primaryColor),
+                  filled: true,
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 1.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 2),
+                  ),
+                ),
               ),
+              const SizedBox(height: 12),
               TextField(
                 controller: obsController,
-                decoration: const InputDecoration(labelText: 'Observação'),
+                decoration: InputDecoration(
+                  labelText: 'Observação',
+                  labelStyle: TextStyle(color: primaryColor),
+                  filled: true,
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 1.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 2),
+                  ),
+                ),
               ),
             ],
           ),
@@ -177,13 +272,13 @@ class _ExerciciosPageState extends State<ExerciciosPage> {
         title: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               "Adicione, remova ou crie exercícios",
-              style: const TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, color: Colors.white),
             ),
             const Text(
               "Construa sua força com consistência",
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Colors.white),
             ),
           ],
         ),
