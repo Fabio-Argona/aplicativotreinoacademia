@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: treino_abc_postgres
+    environment:
+      POSTGRES_USER: treinoabc
+      POSTGRES_PASSWORD: treinoabc123
+      POSTGRES_DB: treinoabcdb
+    ports:
+      - "5433:5433"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  pgdata:
