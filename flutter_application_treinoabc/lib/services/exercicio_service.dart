@@ -28,6 +28,17 @@ class ExercicioService {
     }
   }
 
+  Future<Map<String, dynamic>?> getExercicioById(String id) async {
+    final response = await http.get(Uri.parse('$baseUrl/exercicios/$id'), headers: _headers);
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    } else if (response.statusCode == 404) {
+      return null;
+    } else {
+      throw Exception('Erro ao buscar exercício $id: ${response.statusCode}');
+    }
+  }
+
   // Adicionar exercício
   Future<Exercicio> adicionarExercicio(Exercicio exercicio) async {
     final response = await http.post(
