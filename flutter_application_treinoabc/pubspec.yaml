@@ -1,0 +1,24 @@
+name: flutter_application_treinoabc
+description: Treino ABC - App Flutter Web
+version: 1.0.0
+
+environment:
+  sdk: ">=3.9.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  table_calendar: ^3.0.9
+  http: ^1.2.2
+  font_awesome_flutter: ^10.4.0
+  flutter_lints: ^6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - lib/assets/images/feminino.jpg
+  
+
