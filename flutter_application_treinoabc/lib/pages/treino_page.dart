@@ -177,28 +177,92 @@ class _TreinoPageState extends State<TreinoPage> {
     }
   }
 
+
   void _criarGrupoTreino() async {
     final nomeController = TextEditingController();
 
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Criar novo grupo de treino"),
-        content: TextField(
-          controller: nomeController,
-          decoration: const InputDecoration(labelText: "Nome do treino"),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text("Cancelar"),
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Criar novo treino",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const FaIcon(FontAwesomeIcons.xmark, size: 18),
+                      onPressed: () => Navigator.of(context).pop(false),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: nomeController,
+                  decoration: InputDecoration(
+                    hintText: "Nome do treino",
+                    filled: true,
+                    fillColor: primaryColor.withOpacity(0.06),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: primaryColor,
+                          side: BorderSide(color: primaryColor.withOpacity(0.16)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text("Cancelar"),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        icon: const FaIcon(FontAwesomeIcons.plus, size: 14),
+                        label: const Text("Criar"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        onPressed: () => Navigator.of(context).pop(true),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text("Criar"),
-          ),
-        ],
-      ),
+        );
+      },
     );
 
     if (result == true && nomeController.text.isNotEmpty) {
@@ -363,7 +427,7 @@ class _TreinoPageState extends State<TreinoPage> {
         treinosPorGrupo.remove(grupoId);
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erro ao remover grupo')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Remova todos os treinos antes de excluir o grupo')));
     }
   }
 
@@ -382,10 +446,10 @@ class _TreinoPageState extends State<TreinoPage> {
         title: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("Treinos", style: TextStyle(fontSize: 18)),
+            const Text("Treinos", style: TextStyle(fontSize: 18, color: Colors.white)),
             Text(
               "Vamos evoluir juntos, ${widget.alunoNome}",
-              style: const TextStyle(fontSize: 14),
+              style: const TextStyle(fontSize: 14, color: Colors.white),
             ),
           ],
         ),
