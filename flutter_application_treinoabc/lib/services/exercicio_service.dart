@@ -1,120 +1,33 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/exercicio.dart';
+import '../models/exercicio_dto.dart';
 
 class ExercicioService {
-  final String username = 'admin';
-  final String password = '1234';
-  final String baseUrl = 'http://localhost:8080';
+  final String baseUrl = 'https://gym-manager-java.onrender.com/exercicios';
 
-  Map<String, String> get _headers {
-    final basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
-    return {
-      'Authorization': basicAuth,
-      'Content-Type': 'application/json',
-    };
-  }
+  Future<List<ExercicioDTO>> listar() async {
+    final response = await http.get(Uri.parse(baseUrl));
 
-  // ==================== CRUD Exercícios ====================
-
-  // Listar todos os exercícios
-  Future<List<Exercicio>> getExercicios() async {
-    final response = await http.get(Uri.parse('$baseUrl/exercicios'), headers: _headers);
     if (response.statusCode == 200) {
-      final List decoded = jsonDecode(response.body);
-      return decoded.map((e) => Exercicio.fromJson(e)).toList();
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => ExercicioDTO.fromJson(json)).toList();
     } else {
-      throw Exception('Erro ao buscar exercícios: ${response.statusCode}');
+      throw Exception('Erro ao buscar exercícios');
     }
   }
 
-  Future<Map<String, dynamic>?> getExercicioById(String id) async {
-    final response = await http.get(Uri.parse('$baseUrl/exercicios/$id'), headers: _headers);
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body) as Map<String, dynamic>;
-    } else if (response.statusCode == 404) {
-      return null;
-    } else {
-      throw Exception('Erro ao buscar exercício $id: ${response.statusCode}');
-    }
-  }
+  Future<ExercicioDTO> adicionarExercicio(ExercicioDTO exercicio) async {
+  final response = await http.post(
+    Uri.parse(baseUrl),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode(exercicio.toJson()),
+  );
 
-  // Adicionar exercício
-  Future<Exercicio> adicionarExercicio(Exercicio exercicio) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/exercicios'),
-      headers: _headers,
-      body: jsonEncode(exercicio.toJson()),
-    );
-    if (response.statusCode == 201) {
-      return Exercicio.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Erro ao adicionar exercício');
-    }
+  if (response.statusCode == 201) {
+    return ExercicioDTO.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Erro ao adicionar exercício');
   }
+}
 
-  // Editar exercício
-  Future<Exercicio> editarExercicio(Exercicio exercicio) async {
-    final response = await http.put(
-      Uri.parse('$baseUrl/exercicios/${exercicio.id}'),
-      headers: _headers,
-      body: jsonEncode(exercicio.toJson()),
-    );
-    if (response.statusCode == 200 || response.statusCode == 204) {
-      return exercicio;
-    } else {
-      throw Exception('Erro ao editar exercício');
-    }
-  }
-
-  // Deletar exercício
-  Future<void> deletarExercicio(String id) async {
-    final response = await http.delete(Uri.parse('$baseUrl/exercicios/$id'), headers: _headers);
-    if (response.statusCode != 200 && response.statusCode != 204) {
-      throw Exception('Erro ao deletar exercício');
-    }
-  }
-
-  // ==================== Treino do aluno ====================
-
-  // Listar exercícios de um treino do aluno
-  Future<List<Exercicio>> getTreino(String alunoNome, String treinoNome) async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/treinoExercicios/$alunoNome/$treinoNome'),
-      headers: _headers,
-    );
-    if (response.statusCode == 200) {
-      final List decoded = jsonDecode(response.body);
-      return decoded.map((e) => Exercicio.fromJson(e['exercicio'])).toList();
-    } else {
-      throw Exception('Erro ao buscar treino: ${response.statusCode}');
-    }
-  }
-
-  // Adicionar exercício no treino do aluno
-  Future<void> adicionarExercicioNoTreino(String alunoNome, String treinoNome, String exercicioId) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/treinoExercicios'),
-      headers: _headers,
-      body: jsonEncode({
-        'alunoNome': alunoNome,
-        'treinoNome': treinoNome,
-        'exercicio': {'id': exercicioId},
-      }),
-    );
-    if (response.statusCode != 200 && response.statusCode != 201) {
-      throw Exception('Erro ao adicionar exercício no treino');
-    }
-  }
-
-  // Remover exercício do treino do aluno
-  Future<void> removerExercicioDoTreino(String alunoNome, String treinoNome, String exercicioId) async {
-    final response = await http.delete(
-      Uri.parse('$baseUrl/treinoExercicios/$alunoNome/$treinoNome/$exercicioId'),
-      headers: _headers,
-    );
-    if (response.statusCode != 200 && response.statusCode != 204) {
-      throw Exception('Erro ao remover exercício do treino');
-    }
-  }
 }

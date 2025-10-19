@@ -1,24 +1,37 @@
 name: flutter_application_treinoabc
 description: Treino ABC - App Flutter Web
 version: 1.0.0
-
 environment:
   sdk: ">=3.9.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  table_calendar: ^3.0.9
-  http: ^1.2.2
-  font_awesome_flutter: ^10.5.0
-  flutter_lints: ^6.0.0
+  provider: ^6.1.1
+  http: ^0.13.6
+  fluttertoast: ^8.2.2
+  shared_preferences: ^2.2.2
+  uuid: ^4.0.0 
+  mask_text_input_formatter: ^2.4.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^3.0.1
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
 
 flutter:
-  assets:
-    - lib/assets/images/feminino.jpg
-  
+  uses-material-design: true
 
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
+          weight: 700

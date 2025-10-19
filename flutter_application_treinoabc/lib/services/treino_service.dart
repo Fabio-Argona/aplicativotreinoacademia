@@ -1,57 +1,82 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/treino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../models/treino_dto.dart';
 
 class TreinoService {
-  final String username = 'admin';
-  final String password = '1234';
+  final String baseUrl = 'https://gym-manager-java.onrender.com/treinos';
 
-  Future<List<Treino>> getTreinos(String alunoId) async {
-    final basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
+  Future<void> adicionarTreino(TreinoDTO treino) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('auth_token') ?? '';
+
+    final response = await http.post(
+      Uri.parse(baseUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(treino.toJson()),
+    );
+
+    if (response.statusCode != 200 &&
+        response.statusCode != 201 &&
+        response.statusCode != 204) {
+      throw Exception('Erro ao adicionar treino: ${response.body}');
+    }
+  }
+
+  Future<List<TreinoDTO>> listarPorGrupo(String grupoId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('auth_token') ?? '';
 
     final response = await http.get(
-      Uri.parse('http://localhost:8080/treinos/$alunoId/1'),
+      Uri.parse('$baseUrl/grupo/$grupoId'),
       headers: {
-        'Authorization': basicAuth,
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
       },
     );
 
     if (response.statusCode == 200) {
-      final List decoded = jsonDecode(response.body);
-      return decoded.map((e) => Treino.fromJson(e)).toList();
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => TreinoDTO.fromJson(json)).toList();
+    } else if (response.statusCode == 204) {
+      return [];
     } else {
-      throw Exception('Erro ao buscar treinos');
+      throw Exception('Erro ao buscar treinos do grupo: ${response.body}');
     }
   }
 
-  Future<List<Treino>> getTreinosDoAluno(String alunoId) async {
-  return await getTreinos(alunoId);
-}
+  Future<void> editarTreino(TreinoDTO treino) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('auth_token') ?? '';
 
-  Future<void> criarTreino({
-  required String alunoId,
-  required String nome,
-  required List<String> exercicioIds,
-}) async {
-  final basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
+    final response = await http.put(
+      Uri.parse('$baseUrl/${treino.id}'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(treino.toJson()),
+    );
 
-  final response = await http.post(
-    Uri.parse('http://localhost:8080/treinos'),
-    headers: {
-      'Authorization': basicAuth,
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode({
-      'alunoId': alunoId,
-      'nome': nome,
-      'exercicioIds': exercicioIds,
-    }),
-  );
-
-  if (response.statusCode != 200) {
-    throw Exception('Erro ao criar treino: ${response.statusCode}');
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      throw Exception('Erro ao editar treino: ${response.body}');
+    }
   }
-}
 
+  Future<void> excluirTreino(String treinoId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('auth_token') ?? '';
+
+    final response = await http.delete(
+      Uri.parse('$baseUrl/$treinoId'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Erro ao excluir treino: ${response.body}');
+    }
+  }
 }
